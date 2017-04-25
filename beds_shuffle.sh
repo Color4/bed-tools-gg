@@ -109,9 +109,9 @@ fi
 for bfi in $(seq 0 `bc <<< "${#bedfiles[@]}-1"`); do
 	bf=${bedfiles[$bfi]}
 	if [ 0 -eq $bfi ]; then
-		./bed_shuffle.py $seed $bf -n $nIter -p $perc -o $outDir -k 0
-	else
 		./bed_shuffle.py $seed $bf -n $nIter -p $perc -o $outDir
+	else
+		./bed_shuffle.py $seed $bf -n $nIter -p $perc -o $outDir -k
 	fi
 done
 
