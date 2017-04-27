@@ -46,6 +46,21 @@ optional arguments:
   -l          Keep bedfile rows that include a region.
 ```
 
+## ` ./bed_binchr.py`
+
+```
+Bin a chromosome into a bed file.
+
+positional arguments:
+  chrlen         Path to file with chromosome lengths (chr, length) or chromosome length.
+  chr            The chromosome to bin. E.g., chr1
+
+optional arguments:
+  -h, --help     show this help message and exit
+  --binsize bsi  Bin size. Default: 1e6
+  --binstep bst  Bin step. Non-overlapping bins if equal to bin size. Default: 1e5
+```
+
 ## `./bed_rep.sh`
 
 ```
