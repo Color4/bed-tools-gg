@@ -24,10 +24,27 @@ Cheers!
   -n        Merge bedfiles based on name instead of location.
 ```
 
-## `./bed_addROIs`
+## `./bed_add_name.sh`
 
 ```
-usage: bed_addROIs.py [-h] [-u] [-m] [-l] regfile bedfile outfile
+ usage: ./bed_add_name.sh [-h][-p prefix] -b bedfile
+
+ Description:
+  Add the name column to the provided bedfile in the format prefix_i, where i
+  is the index of the row.
+
+ Mandatory arguments:
+  -b bedfile  Path to the bed file.
+
+ Optional arguments:
+  -h    Show this help page.
+  -p prefix Prefix to use for the name. Default: 'roi_'
+```
+
+## `./bed_add_rois.py`
+
+```
+usage: bed_add_rois.py [-h] [-u] [-m] [-l] regfile bedfile outfile
 
 Assigns rows in a bed file to a given list of regions of interest (ROIs). The
 ROIs can be overlapping. A new column is added to the end of the bed file,
