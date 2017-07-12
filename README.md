@@ -63,19 +63,34 @@ optional arguments:
   -l          Keep bedfile rows that include a region.
 ```
 
-## ` ./bed_binchr.py`
+## ` ./bed_mkbin.py`
 
 ```
-Bin a chromosome into a bed file.
+usage: bed_mkbin.py [-h] [-c chr] [-i bsi] [-t bst] [-d DELIM] [-l] [-A]
+                    chrlen
+
+Bin chromosome(s) into a bed file.
 
 positional arguments:
-  chrlen         Path to file with chromosome lengths (chr, length) or chromosome length.
-  chr            The chromosome to bin. E.g., chr1
+  chrlen                Path to file with chromosome lengths (chr, length) or
+                        chromosome length.
 
 optional arguments:
-  -h, --help     show this help message and exit
-  --binsize bsi  Bin size. Default: 1e6
-  --binstep bst  Bin step. Non-overlapping bins if equal to bin size. Default: 1e5
+  -h, --help            show this help message and exit
+  -c chr, --chr chr     The chromosome to bin. E.g., chr1.
+                        Not needed if -A isused.
+                        Default: chr1
+  -i bsi, --binsize bsi
+                        Bin size. Default: 1e6
+  -t bst, --binstep bst
+                        Bin step. Non-overlapping bins if equal to bin size.
+                        Default: 1e5
+  -d DELIM, --delim DELIM
+                        Delim of chrlen file. Used also for output.
+                        Default: TAB
+  -l, --lastbin         Make additional last bin over the chromosome end to
+                        avoid excluding the last portion.
+  -A, --allchr          Run on every chromosome.
 ```
 
 ## `./bed_rep.sh`
