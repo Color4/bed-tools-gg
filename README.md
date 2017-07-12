@@ -13,7 +13,7 @@ Cheers!
 * Move scripts code to modules.
 * Implement main script.
 
-## Folder:
+## Folders
 
 * **Lib** contains function libraries, shared by modules and scripts.
 * **Mods** contains modules, used by the main script.
