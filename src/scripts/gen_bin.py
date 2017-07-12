@@ -6,7 +6,7 @@
 # Author: Gabriele Girelli
 # Email: gigi.ga90@gmail.com
 # Version: 1.0.0
-# Description: produce a bed with chromosome bins.
+# Description: generate a bed with chromosome bins.
 # ------------------------------------------------------------------------------
 
 
@@ -19,12 +19,24 @@ import os
 import pandas as pd
 import sys
 
+# Loaded local bed-tools-gg python library
+sys.path.append(os.path.dirname(os.path.realpath(__file__)) + '/../lib/')
+import bed_lib as bd
+
+# Change pandas default options
+pd.options.mode.chained_assignment = None  # default='warn'
+
 # PARAMETERS ===================================================================
 
 # Add script description
-parser = argparse.ArgumentParser(
-	description = 'Bin chromosome(s) into a bed file.'
-)
+parser = argparse.ArgumentParser(description = '''
+Generate bin bed file.
+Bin a single chromosome by specifying the chromosome with -c, either its length
+as chrlen, or a file containing it. Bin the whole genome using the -A option.
+Add an additional final bin, which extends over the end of a chromosome,
+to avoid excluding the final portion when the chromosome length is not
+divisible by the bin size.  The output is in bed format.
+''')
 
 # Add params
 parser.add_argument('chrlen', metavar = 'chrlen', type = str, nargs = 1,
@@ -54,6 +66,9 @@ parser.add_argument('-A', '--allchr',
 	dest = 'all_chr', action = 'store_const',
 	const = True, default = False,
 	help = 'Run on every chromosome.')
+parser.add_argument('-o', metavar = 'outfile', type = str, nargs = 1,
+	default = [False],
+	help = 'Output file (not a bed). Output to stdout if not specified.')
 
 # Parse arguments
 args = parser.parse_args()
@@ -66,6 +81,7 @@ step = int(args.binstep[0])
 delim = args.delim[0]
 last_bin = args.last_bin
 all_chr = args.all_chr
+outfile = args.o[0]
 
 if 0 == len(schr) and not all_chr:
 	sys.exit('!!! ERROR !!! Chromosome needed if -A is not used.')
@@ -75,48 +91,6 @@ if 0 == size:
 
 if step > size:
 	sys.exit('!!! ERROR !!! Cannot bin chromosome with bin step > bin size.')
-
-# FUNCTIONS ====================================================================
-
-def bin_chr(chrlen, size, step, last_bin):
-	'''Generate bins covering a chromosome.
-
-	Args:
-		chrlen (int): chromosome length.
-		size (int): bin size.
-		step (int): bin step. Use step == size for not overlapping bins.
-		last_bin (bool): whether to add extra final bin.
-
-	Returns:
-		pd.Dataframe: a chr-start-end-name table.
-	'''
-
-	# Calculate bin borders
-	starts = np.arange(0, int(chrlen) - size, step)
-	ends = starts + size - 1
-
-	if last_bin:
-		# Add last bin
-		starts = starts.tolist()
-		starts.append(starts[-1] + size)
-		starts = np.array(starts)
-		ends = ends.tolist()
-		ends.append(ends[-1] + size)
-		ends = np.array(ends)
-
-	# Generate bin names
-	names = ['bin_' + str(i + 1) for i in range(len(starts))]
-
-	# Produce output bedfile
-	out = pd.DataFrame(
-		data = np.transpose([np.tile(schr, starts.shape[0]),
-			starts, ends, names]),
-		index = np.arange(starts.shape[0]),
-		columns = ['chr', 'start', 'end', 'name']
-	)
-
-	# Output
-	return(out)
 
 # RUN ==========================================================================
 
@@ -141,7 +115,7 @@ if all_chr:
 	# Run per chromosome
 	for schr in lengths['chr']:
 		chrlen = lengths[lengths['chr'] == schr]['len']
-		out.append(bin_chr(chrlen, size, step, last_bin))
+		out.append(bd.bin_chr(chrlen, size, step, last_bin))
 
 	# Concatenate dataframes
 	out = pd.concat(out)
@@ -150,11 +124,14 @@ if all_chr:
 	out['name'] = out['chr'] + '_' + out['name']
 else:
 	# Bin specified chromosome
-	out = bin_chr(chrlen, size, step, last_bin)
+	out = bd.bin_chr(chrlen, size, step, last_bin)
 
-# Print output bedfile
-for i in range(out.shape[0]):
-	print(delim.join(out.iloc[i, :].astype('str').tolist()))
+# Output
+if False == outfile:
+	for i in range(out.shape[0]):
+		print(delim.join(out.iloc[i, :].astype('str').tolist()))
+else:
+	out.to_csv(outfile, sep = delim, header = False, index = False)
 
 # END ==========================================================================
 

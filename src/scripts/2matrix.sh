@@ -30,6 +30,9 @@ helps="
   Merge bedfiles into a matrix. The score column is merged based on the positon
   given by the chr+start+end columns (default) or by the name column (-n option)
 
+ Notes:
+  Output is NOT in bed format.
+
  Mandatory arguments:
   BEDFILEs	Bed file(s). Expected to be ordered per condition.
 

@@ -93,7 +93,6 @@ toShuffle = nreads * perc / 100
 
 print(' >>> Found ' + str(nreads) + ' reads.')
 
-
 print(' >>> Pre-shuffling...')
 preshuffle = np.repeat(np.arange(len(bf['score'])), bf['score'])
 

@@ -30,6 +30,7 @@ helps="
   Repeat a bedfile row as many times as specified in the score column.
   Following the bed format, the score column should be the 5th column.
   If not, specify the index of the column using the -c option.
+  The output is in bed format.
 
  Mandatory arguments:
   -b bedfile	Bed file.

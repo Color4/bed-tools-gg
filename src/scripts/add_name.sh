@@ -27,7 +27,7 @@ helps="
 
  Description:
   Add the name column to the provided bedfile in the format prefix_i, where i
-  is the index of the row.
+  is the index of the row. The output is in bed format.
 
  Mandatory arguments:
   -b bedfile	Path to the bed file.
