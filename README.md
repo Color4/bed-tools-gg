@@ -13,17 +13,13 @@ Cheers!
 * Move scripts code to modules.
 * Implement main script.
 
-## Lib
+## Folder:
 
-Folder containing function libraries, shared by modules and scripts.
+* **Lib** contains function libraries, shared by modules and scripts.
+* **Mods** contains modules, used by the main script.
+* **Scripts** contains single scripts.
 
-## Mods
-
-Folder containing modules, used by the main script.
-
-## Scripts
-
-Folder containing single scripts.
+## Single scripts
 
 ### `2matrix.sh`
 
