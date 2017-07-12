@@ -52,6 +52,10 @@ parser.add_argument('-l',
 parser.add_argument('-o', metavar = 'outfile', type = str, nargs = 1,
 	default = [False],
 	help = 'Output file (not a bed). Output to stdout if not specified.')
+parser.add_argument('-N', '--usename',
+	action = 'store_const', dest = 'use_name',
+	const = True, default = False,
+	help = 'Use ROI name instead of ROI coordinates.')
 
 # Parse arguments
 args = parser.parse_args()
@@ -62,6 +66,7 @@ bedfile = args.bedfile[0]
 keep_unassigned_rows = args.u
 keep_marginal_overlaps = args.m
 keep_including = args.l
+use_name = args.use_name
 outfile = args.o[0]
 
 # Default variables
@@ -102,6 +107,10 @@ for chri in chr_set:
 	chr_roi_labels = np.core.defchararray.add(chr_roi_labels, '-')
 	chr_roi_labels = np.core.defchararray.add(chr_roi_labels,
 		np.array(chr_roi['end']).astype('str').tolist())
+	if use_name:
+		chr_roi_labels = np.core.defchararray.add(chr_roi_labels, ':')
+		chr_roi_labels = np.core.defchararray.add(chr_roi_labels,
+			np.array(chr_roi['name']).astype('str').tolist())
 
 	# Build matrix -------------------------------------------------------------
 	bed_hash_start = [hash(i) for i in chr_bed['start']]

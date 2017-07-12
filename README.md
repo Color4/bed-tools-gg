@@ -44,7 +44,7 @@ Cheers!
 ## `./bed_add_rois.py`
 
 ```
-usage: bed_add_rois.py [-h] [-u] [-m] [-l] regfile bedfile outfile
+usage: bed_add_rois.py [-h] [-u] [-m] [-l] [-o outfile] [-N] regfile bedfile
 
 Assigns rows in a bed file to a given list of regions of interest (ROIs). The
 ROIs can be overlapping. A new column is added to the end of the bed file,
@@ -52,15 +52,17 @@ with all the regions containing it, in the chr:start-end format, space-
 separated.
 
 positional arguments:
-  regfile     Path to bedfile, containing regions to be assigne to.
-  bedfile     Path to bedfile, containing rows to be assigned.
-  outfile     Output file (not a bed).
+  regfile        Path to bedfile, containing regions to be assigned to.
+  bedfile        Path to bedfile, containing rows to be assigned.
 
 optional arguments:
-  -h, --help  show this help message and exit
-  -u          Keep bedfile rows that do not match any region.
-  -m          Keep bedfile rows that do match a region partially.
-  -l          Keep bedfile rows that include a region.
+  -h, --help     show this help message and exit
+  -u             Keep bedfile rows that do not match any region.
+  -m             Assign to bedfile rows that partially match a region.
+  -l             Assign to bedfile rows that include a region.
+  -o outfile     Output file (not a bed). Output to stdout if not specified.
+  -N, --usename  Use ROI name instead of ROI coordinates.
+
 ```
 
 ## ` ./bed_mkbin.py`
