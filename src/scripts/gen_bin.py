@@ -115,7 +115,7 @@ if all_chr:
 	# Run per chromosome
 	for schr in lengths['chr']:
 		chrlen = lengths[lengths['chr'] == schr]['len']
-		out.append(bd.bin_chr(chrlen, size, step, last_bin))
+		out.append(bd.bin_chr(schr, chrlen, size, step, last_bin))
 
 	# Concatenate dataframes
 	out = pd.concat(out)
@@ -124,7 +124,7 @@ if all_chr:
 	out['name'] = out['chr'] + '_' + out['name']
 else:
 	# Bin specified chromosome
-	out = bd.bin_chr(chrlen, size, step, last_bin)
+	out = bd.bin_chr(schr, chrlen, size, step, last_bin)
 
 # Output
 if False == outfile:

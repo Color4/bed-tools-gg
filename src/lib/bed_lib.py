@@ -156,7 +156,7 @@ def assign_to_rois(
 	# Return bed with assigned ROIs (not bed anymore)
 	return(bed)
 
-def bin_chr(chrlen, size, step, last_bin):
+def bin_chr(schr, chrlen, size, step, last_bin):
 	'''Generate bins covering a chromosome.
 
 	Args:
