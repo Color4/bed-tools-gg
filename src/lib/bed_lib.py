@@ -29,9 +29,10 @@ def assign_to_rois(
 		keep_marginal_overlaps (bool): assign to partial overlaps.
 		keep_including (bool): assign to included ROIs.
 		use_name (bool): also use ROIs name.
+		collapse_method (string): collapse method, default: sum.
 
 	Returns:
-		pd.DataFrame: bed file with added rois column.
+		pd.DataFrame: bed file with added rois column or collapsed.
 	'''
 
 	# Assign collapse method for np.ndarray
