@@ -18,7 +18,8 @@ def assign_to_rois(
 	keep_marginal_overlaps,
 	keep_including,
 	use_name,
-	collapse_method = None
+	collapse_method = None,
+	floatValues = None
 ):
 	'''Assign rows from bed to regions in rois.
 
@@ -46,6 +47,8 @@ def assign_to_rois(
 	}
 	if not type(None) == type(collapse_method):
 		collapse = collapse_methods[collapse_method]
+	if type(None) == type(floatValues):
+		floatValues = False
 
 	# Add regions column
 	bed['rois'] = pd.Series(np.array(['' for i in range(bed.shape[0])]),
@@ -147,7 +150,8 @@ def assign_to_rois(
 	# Return collapsed ROI list
 	if not type(None) == type(collapse_method):
 		rois['score'][np.where(np.isnan(rois['score']))[0]] = 0
-		rois['score'] = rois['score'].astype('int')
+		if not floatValues:
+			rois['score'] = rois['score'].astype('int')
 		return(rois)
 
 	# Remove rows without regions

@@ -60,6 +60,14 @@ parser.add_argument('-l',
 parser.add_argument('-o', metavar = 'outfile', type = str, nargs = 1,
 	default = [False],
 	help = 'Output file (not a bed). Output to stdout if not specified.')
+parser.add_argument('--float',
+	action = 'store_const', dest = 'f',
+	const = True, default = False,
+	help = 'Value column as floats.')
+parser.add_argument('--no-header',
+	action = 'store_const', dest = 'header',
+	const = True, default = False,
+	help = 'Bed file has no header.')
 
 # Parse arguments
 args = parser.parse_args()
@@ -73,6 +81,8 @@ keep_marginal_overlaps = args.m
 keep_including = args.l
 use_name = True
 outfile = args.o[0]
+floatValues = args.f
+noHeader = args.header
 
 # Default variables
 bedcolnames = ['chr', 'start', 'end', 'name', 'score']
@@ -83,11 +93,15 @@ bedcolnames = ['chr', 'start', 'end', 'name', 'score']
 rois = pd.read_csv(regfile, '\t', names = bedcolnames)
 
 # Read bed file
-bed = pd.read_csv(bedfile, '\t', names = bedcolnames, skiprows = [0])
+if noHeader:
+	bed = pd.read_csv(bedfile, '\t', names = bedcolnames)
+else:
+	bed = pd.read_csv(bedfile, '\t', names = bedcolnames, skiprows = [0])
 
 # Assign rois to bed rows
 rois = bd.assign_to_rois(rois, bed, keep_unassigned_rows,
-	keep_marginal_overlaps, keep_including, use_name, selected_collapse)
+	keep_marginal_overlaps, keep_including, use_name, selected_collapse,
+	floatValues = floatValues)
 
 # Output
 if False == outfile:
